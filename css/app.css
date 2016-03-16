@@ -1,0 +1,12 @@
+/* Write your styles */
+
+.condition {
+	margin: 10px 0 30px;
+}
+.add i.add-con{
+	margin-left: 10px;
+	cursor: pointer;
+}
+.add .am-u-lg-6{
+	margin: 5px 0;
+}

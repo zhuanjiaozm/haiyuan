@@ -1,0 +1,156 @@
+<!doctype html>
+<html class="no-js" ng-app="app">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<title>海源云数据平台</title>
+
+		<!-- Set render engine for 360 browser -->
+		<meta name="renderer" content="webkit">
+
+		<!-- No Baidu Siteapp-->
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+		<link rel="icon" type="image/png" href="assets/i/favicon.png">
+
+		<!-- Add to homescreen for Chrome on Android -->
+		<meta name="mobile-web-app-capable" content="yes">
+		<link rel="icon" sizes="192x192" href="assets/i/app-icon72x72@2x.png">
+
+		<!-- Add to homescreen for Safari on iOS -->
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-title" content="Amaze UI" />
+		<link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+
+		<!-- Tile icon for Win8 (144x144 + tile color) -->
+		<meta name="msapplication-TileImage" content="assets/i/app-icon72x72@2x.png">
+		<meta name="msapplication-TileColor" content="#0e90d2">
+
+		<link rel="stylesheet" href="assets/css/amazeui.min.css">
+		<link rel="stylesheet" href="css/app.css">
+	</head>
+
+	<body>
+		<div class="condition" ng-controller="indexCtrl">
+			<div class="am-g doc-am-g am-container">
+				<div class="am-u-sm-6 am-u-md-4 am-u-lg-3">
+					<select data-am-selected ng-model="condition.provinceid">
+						<option value="{{province.id}}" ng-repeat="province in geographicInfo.provinces">{{province.name}}</option>
+					</select>
+				</div>
+				<div class="am-u-sm-6 am-u-md-4 am-u-lg-3">
+					<select data-am-selected ng-model="condition.cityid">
+						<option value="{{city.id}}" ng-repeat="city in geographicInfo.cities">{{city.name}}</option>
+					</select>
+				</div>
+				<div class="am-u-sm-6 am-u-md-4 am-u-lg-3">
+					<select data-am-selected ng-model="condition.areaid">
+						<option value="{{area.id}}" ng-repeat="area in geographicInfo.areaes">{{area.name}}</option>
+					</select>
+				</div>
+				<div class="am-u-sm-6 am-u-md-4 am-u-lg-3">
+					<select ng-model="condition.workShopId" data-am-selected>
+						<option value="{{company.dimGeogId}}" ng-repeat="company in companes">{{company.name}}</option>
+					</select>
+				</div>
+
+			</div>
+			<div class="am-g doc-am-g am-container">
+				<hr data-am-widget="divider" style="" class="am-divider am-divider-default" />
+			</div>
+			<div class="am-g doc-am-g am-container">
+				<div class="am-u-sm-6 am-u-md-4 am-u-lg-3">				
+					<select ng-model="condition.typeId" data-am-selected>
+						<option value="{{adimType.id}}" ng-repeat="adimType in adimTypes">{{adimType.name}}</option>
+					</select>
+				</div>
+				<div class="am-u-sm-6 am-u-md-4 am-u-lg-3">
+					<input type="text" class="am-form-field" placeholder="开始时间" date-picker readonly required ng-model="condition.startDate" />
+				</div>
+				<div class="am-u-sm-6 am-u-md-4 am-u-lg-3">
+					<input type="text" class="am-form-field" placeholder="结束时间" date-picker readonly required ng-model="condition.endDate" />
+				</div>
+				<div class="am-u-sm-6 am-u-md-4 am-u-lg-3">
+					<select ng-model="condition.groupby" data-am-selected>
+						<option value="YEAR">按照年显示</option>
+						<option value="MONTH">按照月显示</option>
+						<option value="DAY">按照日显示</option>
+						<option value="HOUR">按照小时显示</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="am-g doc-am-g am-container">
+				<hr data-am-widget="divider" style="" class="am-divider am-divider-default" />
+			</div>
+
+			<div class="am-g doc-am-g am-container add">
+				<h3 style="display: inline-block;">生成条件</h3>
+				<i class="am-icon-plus am-text-success add-con" ng-click="newConf()"></i>
+				<div ng-repeat="conditionItem in conditionList">
+					<div class="am-u-sm-12 am-u-md-8 am-u-lg-6">					
+						<select data-am-selected ng-model="$parent[conditionItem.dimensionalityName]">
+							<option value="electric_number">电量</option>
+							<option value="water_number">水量</option>
+							<option value="gas_number">气量</option>
+							<option value="production_number">产量</option>
+							<option value="sale_number">销售量</option>
+							<option value="temperature">温度</option>
+							<option value="warn_number">热度</option>
+						</select>					
+						<select data-am-selected ng-model="$parent[conditionItem.functionName]">
+							<option value="SUM">求和</option>
+							<option value="AVG">平均</option>
+							<option value="MAX">最大</option>
+							<option value="MIN">最小</option>
+						</select>
+					</div>					
+				</div>
+			</div>
+
+			<div class="am-g doc-am-g am-container">
+				<hr data-am-widget="divider" style="" class="am-divider am-divider-default" />
+			</div>
+
+			<div class="am-g doc-am-g am-container">
+				<div class="am-u-sm-6 am-u-md-4 am-u-lg-3">
+				</div>
+				<div class="am-u-sm-6 am-u-md-4 am-u-lg-3">
+					<button type="button" class="am-btn am-btn-success am-btn-block am-radius" ng-click="submit(condition)"><i class="am-icon-check"></i>生产图表</button>
+				</div>
+			</div>
+
+			<div class="am-g doc-am-g am-container">
+				<hr data-am-widget="divider" style="" class="am-divider am-divider-default" />
+			</div>
+
+			
+		</div>
+		<div class="am-g doc-am-g am-container">
+			<div id="main" style="width: 100%;height:400px;">
+			</div>
+		</div>
+		<!--在这里编写你的代码-->
+
+		<!--[if (gte IE 9)|!(IE)]><!-->
+		<script src="assets/js/jquery.min.js"></script>
+		<!--<![endif]-->
+		<!--[if lte IE 8 ]>
+			<script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+			<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+			<script src="assets/js/amazeui.ie8polyfill.min.js"></script>
+		<![endif]-->
+		<script src="assets/js/angular.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="bower_components/My97DatePicker/WdatePicker.js" type="text/javascript" charset="utf-8"></script>
+		<script src="assets/js/amazeui.min.js"></script>
+		<script src="assets/js/echarts.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+
+</html>
